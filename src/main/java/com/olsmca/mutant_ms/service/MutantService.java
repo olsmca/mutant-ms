@@ -38,7 +38,6 @@ public class MutantService {
 
     public void create(final MutantDTO mutantDTO) {
         final Mutant mutant = new Mutant();
-        mutantDTO.setIsMutant(false);
         mapToEntity(mutantDTO, mutant);
 
         Optional<MutantDTO> optionalMutantDTO = get(mutant.getDna());

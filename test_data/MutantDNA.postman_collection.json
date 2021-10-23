@@ -1,0 +1,133 @@
+{
+	"info": {
+		"_postman_id": "5a251fac-e7ef-4afa-b09e-d010dfbd08d1",
+		"name": "MutantDNA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "mutantsRunner",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.globals.set(\"jsonBody\", JSON.stringify(pm.iterationData.toObject()));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Successful POST request',function(){",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 403]);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{{jsonBody}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9090/mutants",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"mutants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mutantsApi",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"dna\": [\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTC\",\"TCACTG\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:9090/mutants",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"mutants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Mutants",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/mutants",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"mutants"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Stats",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9090/stats/",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"stats",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

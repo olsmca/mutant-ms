@@ -1,0 +1,22 @@
+[	{
+		"dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTC","TCACTG"]
+	},
+	{
+		"dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","ATCCCC","TCACTG"]
+	},
+	{
+		"dna": ["ATGCGA","CTGTGC","TTTTAT","AGAAGG","ATCCCC","TCCGGG"]
+	},
+	{
+		"dna": ["ATGCGA","ATGTGC","GTTTTT","ATAAGG","ATCCCC","ACCGGG"]
+	},
+	{
+		"dna": ["ATGCGA","ATGTGC","GGTTTG","ATAAGG","ATCCCG","ACGGGG"]
+	},
+	{
+		"dna": ["AGGCGA","ATCTGC","GGTATG","ATAAGG","ATCCCG","ACGGCG"]
+	},
+	{
+		"dna": ["ATGCAA","ATCTGC","GGTATG","ATAAGG","ATCCCG","ACGGCG"]
+	}
+]

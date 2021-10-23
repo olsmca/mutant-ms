@@ -132,6 +132,8 @@ public class ADNAnalyzerImpl implements ADNAnalyzer {
 
                 if((numH + numV) >= 2){
                     log.info("Cantidad minima de DnA encontrada");
+                    log.info("Numero Horizontales: " + numH);
+                    log.info("Numero Verticales:   " + numV);
                     return true;
                 }
 
@@ -170,8 +172,8 @@ public class ADNAnalyzerImpl implements ADNAnalyzer {
             }
         }
 
-        System.out.println("Numero Horizontales: " + numH);
-        System.out.println("Numero Verticales:   " + numV);
+        log.info("Numero Horizontales: " + numH);
+        log.info("Numero Verticales:   " + numV);
 
         return (numH + numV) >= 2;
     }

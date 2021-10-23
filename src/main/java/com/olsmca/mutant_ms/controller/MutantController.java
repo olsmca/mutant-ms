@@ -1,13 +1,13 @@
 package com.olsmca.mutant_ms.controller;
 
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
-import com.olsmca.mutant_ms.service.ADNAnalyzer;
-import com.olsmca.mutant_ms.service.MutantService;
+import com.olsmca.mutant_ms.service.ADNAnalyzerService;
+import com.olsmca.mutant_ms.service.MutantPersistenceService;
+
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/mutants", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MutantController {
 
-    private final MutantService mutantService;
+    private final MutantPersistenceService mutantService;
 
-    private final ADNAnalyzer adnAnalyzer;
+    private final ADNAnalyzerService adnAnalyzer;
 
-    public MutantController(final MutantService mutantService, ADNAnalyzer adnAnalyzer) {
+    public MutantController(final MutantPersistenceService mutantService, ADNAnalyzerService adnAnalyzer) {
         this.mutantService = mutantService;
         this.adnAnalyzer = adnAnalyzer;
     }

@@ -15,13 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @SpringBootTest
-public class ADNAnalyzerServiceImplTest {
+class ADNAnalyzerServiceImplTest {
 
     @Autowired
     ADNAnalyzerService adnAnalyzerService;
-
-    @MockBean
-    MutantRepository mutantRepository;
 
     @ParameterizedTest
     @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)

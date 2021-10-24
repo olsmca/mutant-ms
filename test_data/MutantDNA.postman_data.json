@@ -18,5 +18,11 @@
 	},
 	{
 		"dna": ["ATGCAA","ATCTGC","GGTATG","ATAAGG","ATCCCG","ACGGCG"]
+	},
+	{
+		"dna": ["CAGTC","TTATT","AGAAT","CCCCT","TCACT"]
+	},
+	{
+		"dna": ["ATGCAAAG","AATCTGCG","GGGTATGG","ATAAAGGG","ATTCCCGG","ACGGGCGG","ATAGGGGG","ATAGGAAA"]
 	}
 ]

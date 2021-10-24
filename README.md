@@ -14,7 +14,7 @@ Aplicacion Spring Boot responde peticiones REST
 ```npm install -g newman-reporter-htmlextra```
 
 ###Run Script
-```newman run test_data/MutantDNA.postman_collection.json -d test_data/MutantDNA.postman_data.json -n 10 -r htmlextra,cli```
+```newman run test_data/MutantDNA.postman_collection.json -d test_data/MutantDNA.postman_data.json -n 100 -r htmlextra,cli```
 
 ## Coverage Code
 ### Run Sonar

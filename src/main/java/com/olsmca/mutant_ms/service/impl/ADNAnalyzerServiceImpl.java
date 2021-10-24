@@ -1,14 +1,13 @@
 package com.olsmca.mutant_ms.service.impl;
 
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
+import com.olsmca.mutant_ms.repository.domain.SecuenciaDNA;
 import com.olsmca.mutant_ms.service.ADNAnalyzerService;
 import com.olsmca.mutant_ms.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -38,7 +37,102 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         if( (sizeMatcher != sizeDnaLs ) || (sizeElement != sizeDnaLs ) ){
             return false;
         }
-        return isNewMutant(mutantDTO);
+
+        char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
+
+        return isNewMutant(matrix) || isMutanteDiagonales(matrix) ;
+    }
+
+    protected boolean isNewMutant(final char [][] matrix) {
+
+
+        SecuenciaDNA secuenciaHorizontal = new SecuenciaDNA();
+        SecuenciaDNA secuenciaVertical = new SecuenciaDNA();
+
+        for(int x=0; x<matrix.length; x++) {
+            for(int y=0, y1=1 ; y1<matrix.length; y++, y1++) {
+
+                if((secuenciaHorizontal.getNumSequence() + secuenciaVertical.getNumSequence()) >= 2){
+                    log.info("Cantidad minima de DnA encontrada");
+                    log.info("Numero Horizontales: " + secuenciaHorizontal.getNumSequence());
+                    log.info("Numero Verticales:   " + secuenciaVertical.getNumSequence());
+                    return true;
+                }
+                //Diagonales Horizontales
+                log.info("Position Horizontales: " + "x: " + x + " y: "+ y + " valor = " + matrix[x][y] + "  |  x: "
+                        + x +  " y: "+ y1 +" valor = " +matrix[x][y1]);
+                this.validateSequence(matrix[x][y], matrix[x][y1], secuenciaHorizontal);
+                //Diagonales Verticales
+                log.info("Position Verticales: " + "x: " + y + " y: "+ x + " valor = " + matrix[y][x] + "  |  x: "
+                        + y1 +  " y: "+ x +" valor = " +matrix[y1][x]);
+                this.validateSequence(matrix[y][x], matrix[y1][x], secuenciaVertical);
+
+                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (secuenciaHorizontal.getCountMutant() == 0
+                        && secuenciaVertical.getCountMutant() == 0 )){
+                    log.info("Cambio de Secuencia Valido");
+                    break;
+                }
+            }
+            secuenciaHorizontal.setCountMutant(0);
+            secuenciaVertical.setCountMutant(0);
+        }
+
+        System.out.println("Cantidad Secuencias Horizontales: " + secuenciaHorizontal.getNumSequence());
+        System.out.println("Cantidad Secuencias Verticales:   " + secuenciaVertical.getNumSequence());
+
+        return (secuenciaHorizontal.getNumSequence() + secuenciaVertical.getNumSequence()) >= 2;
+    }
+
+    public boolean isMutanteDiagonales(final char [][] matrix) {
+        int ciclos = matrix.length;
+        SecuenciaDNA diagonalesDerIzq = new SecuenciaDNA();
+        SecuenciaDNA diagonalesIzqDer = new SecuenciaDNA();
+        SecuenciaDNA diagonalesAbaArr = new SecuenciaDNA();
+
+        for(int x=0; ciclos >= Constants.SIZE_DNA_PATTER_VALID; x++) {
+            int x1 = 0;
+            int y2 = matrix.length - (x + 1);
+            int x2 = matrix.length - 1;
+
+            for(int y=x, y1=x+1; y1<ciclos; y++, x1++, y1++, x2--, y2--) {
+
+                if((diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
+                        + diagonalesAbaArr.getNumSequence()) >= 2){
+                    log.info("Cantidad minima de DnA encontrada");
+                    log.info("Numero diagonalesDerIzq: " + diagonalesDerIzq.getNumSequence());
+                    log.info("Numero diagonalesIzqDer: " + diagonalesIzqDer.getNumSequence());
+                    log.info("Numero diagonalesAbaArr: " + diagonalesAbaArr.getNumSequence());
+                    return true;
+                }
+
+                log.info("Diagonal Izq - Der (Arriba - Abajo)");
+                this.validateSequence(matrix[x1][y], matrix[x1 + 1][y + 1], diagonalesDerIzq);
+
+                log.info("Diagonal Der - Izq (Arriba - Abajo)");
+                this.validateSequence(matrix[x1][y2], matrix[x1 + 1][y2 - 1], diagonalesIzqDer);
+
+                log.info("Diagonal Izq - Der (Abajo - Arriba)");
+                this.validateSequence(matrix[x2][y1-1], matrix[x2-1][y1], diagonalesAbaArr);
+
+                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzq.getCountMutant() == 0
+                        && diagonalesIzqDer.getCountMutant() == 0 && diagonalesAbaArr.getCountMutant() == 0)){
+                    log.info("Cambio de Secuencia Valido");
+                    break;
+                }
+            }
+            ciclos--;
+            System.out.println();
+        }
+
+        System.out.println();
+        System.out.println("Cantidad Secuencias Diagonales Derecha-Izquierda: " + diagonalesDerIzq.getNumSequence());
+        System.out.println("Cantidad Secuencias Diagonales Izquierda-Derecha: " + diagonalesIzqDer.getNumSequence());
+        System.out.println("Cantidad Secuencias Diagonales Izq-Der Aba-Arr  : " + diagonalesAbaArr.getNumSequence());
+
+        System.out.println();
+
+        return (diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
+                + diagonalesAbaArr.getNumSequence()) >= 2;
     }
 
     protected char[][] getMatrixfromArray(String[] dna){
@@ -51,125 +145,16 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         return matrixFromArray;
     }
 
-    protected List<String> getColumnsAsStrings(char[][] matrix) {
-        List<String> columnsAsString = new ArrayList<>();
-        for(var i = 0; i < matrix.length; i++) {
-            char[] columnAsChar = new char[matrix.length];
-            for(var j = 0; j< matrix.length; j++) {
-                columnAsChar[j]= matrix[j][i];
-                log.info("ColumnaChar: "+columnAsChar[j]);
+    private void validateSequence(char val1, char val2, SecuenciaDNA secuenciaDNA) {
+        if(val1 == val2) {
+            secuenciaDNA.setCountMutant(secuenciaDNA.getCountMutant() + 1);
+            if(secuenciaDNA.getCountMutant() == Constants.SIZE_DNA_PATTER_VALID-1) {
+                secuenciaDNA.setCountMutant(0);
+                secuenciaDNA.setNumSequence(secuenciaDNA.getNumSequence() + 1);
             }
-            columnsAsString.add(String.valueOf(columnAsChar));
+        }else {
+            secuenciaDNA.setCountMutant(0);
         }
-        log.info("Columna: "+columnsAsString);
-        return columnsAsString;
-    }
-
-    protected int validarSecuencia(List<String> lsDna) {
-        var count = 0;
-        for(String dnaSequence : lsDna) {
-            var pattern = Pattern.compile(Constants.DNA_PATTERN);
-            var matcher = pattern.matcher(dnaSequence);
-            while (matcher.find()) {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    protected boolean isMutant(char[][] mutantMatrix, String word) {
-        for(var i = 0; i < mutantMatrix.length; i++) {
-            for(var j = 0; j < mutantMatrix[i].length;j++){
-                if(moveInMatrix(i,j,0,mutantMatrix, word) && mutantMatrix[i][j] == word.charAt(0)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    protected boolean moveInMatrix(int i, int j, int countWord, char[][] mutantMatrix,  String word) {
-        log.info("position : " + "i: " + i + " "+ "j: "+ j + " "+ "valor "+ " " + mutantMatrix[i][j]);
-        if(countWord == word.length()){
-            return true;
-        }
-
-        if(i < 0 || i >= mutantMatrix.length || j < 0 || j >= mutantMatrix[i].length || mutantMatrix[i][j] != word.charAt(countWord)){
-            return false;
-        }
-
-        char temp = mutantMatrix[i][j];
-        log.info("temporal: "+ temp);
-        mutantMatrix[i][j] = ' ';
-
-        boolean win = moveInMatrix(i + 1, j, countWord +1, mutantMatrix, word)
-                || moveInMatrix(i, j + 1, countWord +1, mutantMatrix, word);
-
-        mutantMatrix[i][j] = temp;
-        return win;
-    }
-
-    protected boolean isNewMutant(MutantDTO mutantDTO){
-        char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
-
-        int numH = 0;
-        int canH = 0;
-        int numV = 0;
-        int canV = 0;
-
-        for(int x=0; x<matrix.length; x++) {
-            canH = 0;
-            canV = 0;
-
-            log.info("Row Analizy: "+String.copyValueOf(matrix[x]));
-
-            for(int y=0, y1=1 ; y1<matrix.length; y++, y1++) {
-
-                if((numH + numV) >= 2){
-                    log.info("Cantidad minima de DnA encontrada");
-                    log.info("Numero Horizontales: " + numH);
-                    log.info("Numero Verticales:   " + numV);
-                    return true;
-                }
-
-                //Validar Secuencia Horizontal
-                log.info("Secuencia Horizontal");
-                log.info("position: " + "x: " + x + " y: "+ y + " valor = " + matrix[x][y] + "  |  x: " + x +  " y1: "+ y1 +" valor = " +matrix[x][y1]);
-                if(matrix[x][y] == matrix[x][y1]) {
-                    canH++;
-                    if(canH == Constants.SIZE_DNA_PATTER_VALID-1) {
-                        canH = 0;
-                        numH++;
-                    }
-                }
-                else {
-                    canH = 0;
-                }
-
-                //Validar Secuencia Vertical
-                log.info("Secuencia Vertical");
-                log.info("position: " + "x: " + y + " y: "+ x + " valor = " + matrix[y][x] + "   | x: " + y1 +  " y1: "+ x +" valor = " +matrix[y1][x]);
-                if(matrix[y][x] == matrix[y1][x] ) {
-                    canV++;
-                    if(canV == Constants.SIZE_DNA_PATTER_VALID-1) {
-                        canV = 0;
-                        numV++;
-                    }
-                }
-                else {
-                    canV = 0;
-                }
-
-                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (canH == 0 && canV == 0 ) ){
-                    log.info("Cambio de Secuencia Valido");
-                    break;
-                }
-            }
-        }
-
-        log.info("Numero Horizontales: " + numH);
-        log.info("Numero Verticales:   " + numV);
-
-        return (numH + numV) >= 2;
     }
 }
+

@@ -13,10 +13,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
-public class MutantPersistenceServiceImplTest {
+class MutantPersistenceServiceImplTest {
 
     @Autowired
     MutantPersistenceService mutantPersistenceService;
@@ -36,5 +37,6 @@ public class MutantPersistenceServiceImplTest {
         doReturn(mutant).when(mutantRepository).save(any());
 
         mutantPersistenceService.create(mutantDTO);
+
     }
 }

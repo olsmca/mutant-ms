@@ -21,7 +21,7 @@ if (project.hasProperty("prod")) {
 }
 
 wrapper {
-    gradleVersion = "7.0.2"
+    gradleVersion = "8.0"
 }
 
 defaultTasks "bootRun"

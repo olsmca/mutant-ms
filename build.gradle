@@ -24,10 +24,6 @@ wrapper {
     gradleVersion = "7.0.2"
 }
 
-/*bootRun {
-    environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: 'local'
-}*/
-
 defaultTasks "bootRun"
 
 repositories {
@@ -54,27 +50,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    //finalizedBy jacocoTestReport // report is always generated after tests run
 }
-
-/*jacocoTestReport {
-    dependsOn test // tests are required to run before generating the report
-}
-
-jacoco {
-    toolVersion = "0.8.5"
-    reportsDir = file("$buildDir/jacoco")
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 1
-            }
-        }
-    }
-}*/
 
 compileJava.dependsOn processResources
 processResources.dependsOn bootBuildInfo

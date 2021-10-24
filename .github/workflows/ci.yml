@@ -24,10 +24,10 @@ jobs:
       run: chmod +x gradlew
       
     - name: Build with Gradle
-      run: ./gradlew build -x test
+      run: ./gradlew clean build -x test
       
     - name: Unit Test
-      run: ./gradlew clean test
+      run: ./gradlew check jacocoTestReport
     
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1

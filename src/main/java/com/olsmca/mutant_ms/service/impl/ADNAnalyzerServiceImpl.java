@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Matcher;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -19,14 +19,23 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
     @Override
     public boolean isMutant(MutantDTO mutantDTO) {
 
-        Pattern pattern = Pattern.compile(Constants.DNA_SEQUENCE_PATTERN);
-        Matcher matcher = pattern.matcher(String.join(",",mutantDTO.getDna()));
+        Optional<String> stringOptional =Arrays.stream(mutantDTO.getDna()).findFirst();
+
+        int sizeElement = stringOptional.isPresent()?stringOptional.get().length():0;
+        int sizeDnaLs = mutantDTO.getDna().length;
+        var dynamicPattern = String.format("[ATGC]{%d}",sizeElement);
+
+        var pattern = Pattern.compile(dynamicPattern);
+        var matcher = pattern.matcher(String.join(",",mutantDTO.getDna()));
 
         long sizeMatcher = matcher.results().count();
 
+        log.info("sizeElement: "+sizeElement);
         log.info("Matcher: "+sizeMatcher);
+        log.info("SizeDNA: "+sizeDnaLs);
+        log.info("dynamicPattern: "+dynamicPattern);
 
-        if(sizeMatcher!= mutantDTO.getDna().length){
+        if( (sizeMatcher != sizeDnaLs ) || (sizeElement != sizeDnaLs ) ){
             return false;
         }
         return isNewMutant(mutantDTO);
@@ -34,8 +43,8 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
     protected char[][] getMatrixfromArray(String[] dna){
 
-        char matrixFromArray[][] = new char[dna.length][dna.length];
-        for(int i = 0; i<= dna.length -1; i++) {
+        char [][] matrixFromArray = new char[dna.length][dna.length];
+        for(var i = 0; i<= dna.length -1; i++) {
             matrixFromArray[i] = dna[i].toCharArray();
             log.info("Dna: "+dna[i]);
         }
@@ -44,11 +53,11 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
     protected List<String> getColumnsAsStrings(char[][] matrix) {
         List<String> columnsAsString = new ArrayList<>();
-        for(int i = 0; i < matrix.length; i++) {
+        for(var i = 0; i < matrix.length; i++) {
             char[] columnAsChar = new char[matrix.length];
-            for(int j = 0; j< matrix.length; j++) {
+            for(var j = 0; j< matrix.length; j++) {
                 columnAsChar[j]= matrix[j][i];
-                //log.info("ColumnaChar: "+columnAsChar[j]);
+                log.info("ColumnaChar: "+columnAsChar[j]);
             }
             columnsAsString.add(String.valueOf(columnAsChar));
         }
@@ -57,10 +66,10 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
     }
 
     protected int validarSecuencia(List<String> lsDna) {
-        int count = 0;
+        var count = 0;
         for(String dnaSequence : lsDna) {
-            Pattern pattern = Pattern.compile(Constants.DNA_PATTERN);
-            Matcher matcher = pattern.matcher(dnaSequence);
+            var pattern = Pattern.compile(Constants.DNA_PATTERN);
+            var matcher = pattern.matcher(dnaSequence);
             while (matcher.find()) {
                 count++;
             }
@@ -69,8 +78,8 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
     }
 
     protected boolean isMutant(char[][] mutantMatrix, String word) {
-        for(int i = 0; i < mutantMatrix.length; i++) {
-            for(int j = 0; j < mutantMatrix[i].length;j++){
+        for(var i = 0; i < mutantMatrix.length; i++) {
+            for(var j = 0; j < mutantMatrix[i].length;j++){
                 if(moveInMatrix(i,j,0,mutantMatrix, word) && mutantMatrix[i][j] == word.charAt(0)) {
                     return true;
                 }
@@ -80,7 +89,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
     }
 
     protected boolean moveInMatrix(int i, int j, int countWord, char[][] mutantMatrix,  String word) {
-        System.out.println("position: " + "i: " + i + " "+ "j: "+ j + " "+ "valor "+ " " + mutantMatrix[i][j]);
+        log.info("position : " + "i: " + i + " "+ "j: "+ j + " "+ "valor "+ " " + mutantMatrix[i][j]);
         if(countWord == word.length()){
             return true;
         }
@@ -90,7 +99,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         }
 
         char temp = mutantMatrix[i][j];
-        System.out.println("temporal: "+ temp);
+        log.info("temporal: "+ temp);
         mutantMatrix[i][j] = ' ';
 
         boolean win = moveInMatrix(i + 1, j, countWord +1, mutantMatrix, word)
@@ -125,7 +134,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
                 //Validar Secuencia Horizontal
                 log.info("Secuencia Horizontal");
-                log.info("position: " + "x: " + x + " y: "+ y + " valor = " + matrix[x][y] + " | x: " + x +  " y1: "+ y1 +" valor = " +matrix[x][y1]);
+                log.info("position: " + "x: " + x + " y: "+ y + " valor = " + matrix[x][y] + "  |  x: " + x +  " y1: "+ y1 +" valor = " +matrix[x][y1]);
                 if(matrix[x][y] == matrix[x][y1]) {
                     canH++;
                     if(canH == Constants.SIZE_DNA_PATTER_VALID-1) {
@@ -139,7 +148,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
                 //Validar Secuencia Vertical
                 log.info("Secuencia Vertical");
-                log.info("position: " + "x: " + y + " y: "+ x + " valor = " + matrix[y][x] + " | x: " + y1 +  " y1: "+ x +" valor = " +matrix[y1][x]);
+                log.info("position: " + "x: " + y + " y: "+ x + " valor = " + matrix[y][x] + "   | x: " + y1 +  " y1: "+ x +" valor = " +matrix[y1][x]);
                 if(matrix[y][x] == matrix[y1][x] ) {
                     canV++;
                     if(canV == Constants.SIZE_DNA_PATTER_VALID-1) {

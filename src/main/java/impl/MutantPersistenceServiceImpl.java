@@ -56,7 +56,7 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
                         .countMutantDna(mutantRepository.countAllByIsMutant(true))
                         .countHumanDna(mutantRepository.countAllByIsMutant(false))
                         .build();
-         stats.setRatio(stats.CalculateRatio());
+         stats.setRatio(stats.calculateRatio());
          return stats;
     }
 

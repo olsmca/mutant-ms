@@ -1,18 +1,16 @@
 package com.olsmca.mutant_ms.service.impl;
 
-import com.olsmca.mutant_ms.repository.domain.Mutant;
-import com.olsmca.mutant_ms.repository.domain.Stats;
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
 import com.olsmca.mutant_ms.repository.MutantRepository;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import com.olsmca.mutant_ms.repository.domain.Mutant;
+import com.olsmca.mutant_ms.repository.domain.Stats;
 import com.olsmca.mutant_ms.service.MutantPersistenceService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MutantPersistenceServiceImpl implements MutantPersistenceService {
@@ -40,24 +38,22 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
 
     @Override
     public void create(final MutantDTO mutantDTO) {
-        final Mutant mutant = new Mutant();
+        final var mutant = new Mutant();
         mapToEntity(mutantDTO, mutant);
 
         Optional<MutantDTO> optionalMutantDTO = get(mutant.getDna());
-        if(optionalMutantDTO.isPresent()){
-            return;
-        }else{
+        if(!optionalMutantDTO.isPresent()){
             mutantRepository.save(mutant);
         }
     }
 
     @Override
     public Stats getStats(){
-        Stats stats = Stats.builder()
+        var stats = Stats.builder()
                 .countMutantDna(mutantRepository.countAllByIsMutant(true))
                 .countHumanDna(mutantRepository.countAllByIsMutant(false))
                 .build();
-        stats.setRatio(stats.CalculateRatio());
+        stats.setRatio(stats.calculateRatio());
         return stats;
     }
 

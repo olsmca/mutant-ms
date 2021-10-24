@@ -13,7 +13,7 @@ public class Stats {
     long countHumanDna;
     private double ratio;
 
-    public double CalculateRatio() {
-        return countHumanDna + countMutantDna == 0?1f:countMutantDna / (double) countHumanDna;
+    public double calculateRatio() {
+        return countHumanDna + countMutantDna == 0?0:countMutantDna / (double) countHumanDna;
     }
 }

@@ -1,12 +1,10 @@
 package com.olsmca.mutant_ms.repository.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.Pattern;
-
-import com.olsmca.mutant_ms.util.Constants;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 
 @Entity

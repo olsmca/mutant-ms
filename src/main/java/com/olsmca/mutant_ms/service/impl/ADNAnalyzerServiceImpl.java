@@ -40,14 +40,13 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
         char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
 
-        return isNewMutant(matrix) || isMutanteDiagonales(matrix) ;
+        return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
     }
 
     protected boolean isNewMutant(final char [][] matrix) {
 
-
-        SecuenciaDNA secuenciaHorizontal = new SecuenciaDNA();
-        SecuenciaDNA secuenciaVertical = new SecuenciaDNA();
+        var secuenciaHorizontal = new SecuenciaDNA();
+        var secuenciaVertical = new SecuenciaDNA();
 
         for(int x=0; x<matrix.length; x++) {
             for(int y=0, y1=1 ; y1<matrix.length; y++, y1++) {
@@ -77,24 +76,24 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
             secuenciaVertical.setCountMutant(0);
         }
 
-        System.out.println("Cantidad Secuencias Horizontales: " + secuenciaHorizontal.getNumSequence());
-        System.out.println("Cantidad Secuencias Verticales:   " + secuenciaVertical.getNumSequence());
+        log.info("Cantidad Secuencias Horizontales: " + secuenciaHorizontal.getNumSequence());
+        log.info("Cantidad Secuencias Verticales:   " + secuenciaVertical.getNumSequence());
 
         return (secuenciaHorizontal.getNumSequence() + secuenciaVertical.getNumSequence()) >= 2;
     }
 
     public boolean isMutanteDiagonales(final char [][] matrix) {
         int ciclos = matrix.length;
-        SecuenciaDNA diagonalesDerIzq = new SecuenciaDNA();
-        SecuenciaDNA diagonalesIzqDer = new SecuenciaDNA();
-        SecuenciaDNA diagonalesAbaArr = new SecuenciaDNA();
+        var diagonalesDerIzq = new SecuenciaDNA();
+        var diagonalesIzqDer = new SecuenciaDNA();
+        var diagonalesAbaArr = new SecuenciaDNA();
 
-        for(int x=0; ciclos >= Constants.SIZE_DNA_PATTER_VALID; x++) {
-            int x1 = 0;
+        for(var x=0; ciclos >= Constants.SIZE_DNA_PATTER_VALID; x++) {
+            var x1 = 0;
             int y2 = matrix.length - (x + 1);
             int x2 = matrix.length - 1;
 
-            for(int y=x, y1=x+1; y1<ciclos; y++, x1++, y1++, x2--, y2--) {
+            for(int y=x, y1=x+1; y1<ciclos; y++, x1++, y1++, x2--, y2--,ciclos--) {
 
                 if((diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
                         + diagonalesAbaArr.getNumSequence()) >= 2){
@@ -106,12 +105,18 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
                 }
 
                 log.info("Diagonal Izq - Der (Arriba - Abajo)");
+                log.info("Position Horizontales: " + "x: " + x1 + " y: "+ y + " valor = " + matrix[x1][y] + "  |  x: "
+                        + (x1 + 1) +  " y: "+ (y + 1)+" valor = " +matrix[x1 + 1][y + 1]);
                 this.validateSequence(matrix[x1][y], matrix[x1 + 1][y + 1], diagonalesDerIzq);
 
                 log.info("Diagonal Der - Izq (Arriba - Abajo)");
+                log.info("Position Horizontales: " + "x: " + x1 + " y: "+ y2 + " valor = " + matrix[x1][y2] + "  |  x: "
+                        + (x1+1) +  " y: "+ (y2-1)+" valor = " +matrix[x1 + 1][y2 - 1]);
                 this.validateSequence(matrix[x1][y2], matrix[x1 + 1][y2 - 1], diagonalesIzqDer);
 
                 log.info("Diagonal Izq - Der (Abajo - Arriba)");
+                log.info("Position Horizontales: " + "x: " + x2 + " y: "+ (y1-1) + " valor = " + matrix[x2][y1-1] + "  |  x: "
+                        + (x2-1) +  " y: "+ (y1)+" valor = " +matrix[x2-1][y1]);
                 this.validateSequence(matrix[x2][y1-1], matrix[x2-1][y1], diagonalesAbaArr);
 
                 if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzq.getCountMutant() == 0
@@ -120,16 +125,11 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
                     break;
                 }
             }
-            ciclos--;
-            System.out.println();
         }
 
-        System.out.println();
-        System.out.println("Cantidad Secuencias Diagonales Derecha-Izquierda: " + diagonalesDerIzq.getNumSequence());
-        System.out.println("Cantidad Secuencias Diagonales Izquierda-Derecha: " + diagonalesIzqDer.getNumSequence());
-        System.out.println("Cantidad Secuencias Diagonales Izq-Der Aba-Arr  : " + diagonalesAbaArr.getNumSequence());
-
-        System.out.println();
+        log.info("Cantidad Secuencias Diagonales Derecha-Izquierda: " + diagonalesDerIzq.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Izquierda-Derecha: " + diagonalesIzqDer.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Izq-Der Aba-Arr  : " + diagonalesAbaArr.getNumSequence());
 
         return (diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
                 + diagonalesAbaArr.getNumSequence()) >= 2;

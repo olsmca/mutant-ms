@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(value = "/mutants", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/mutant/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MutantController {
 
     private final MutantPersistenceService mutantService;
@@ -37,7 +37,7 @@ public class MutantController {
         return ResponseEntity.ok(mutantService.findAll());
     }
 
-    @GetMapping("/{dna}")
+    @GetMapping("{dna}")
     public ResponseEntity<MutantDTO> getMutant(@PathVariable final String dna) {
         Optional<MutantDTO> mutantDTOOptional = mutantService.get(dna);
         return ResponseEntity.ok(mutantDTOOptional.isPresent()?mutantDTOOptional.get():null);

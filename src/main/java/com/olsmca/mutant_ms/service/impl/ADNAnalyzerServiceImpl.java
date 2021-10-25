@@ -40,8 +40,8 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
         char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
 
-        //return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
-        return ( isMutanteDiagonales(matrix));
+        return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
+        //return ( isMutanteDiagonales(matrix));
     }
 
     protected boolean isNewMutant(final char [][] matrix) {

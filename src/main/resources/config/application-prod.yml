@@ -5,9 +5,9 @@ spring:
   datasource:
     initialization-mode: always
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgres://qdjlbhfb:7kvTQWL91UtXXvhnPvIwFdHsG-lCETFf@fanny.db.elephantsql.com/qdjlbhfb
-    username: qdjlbhfb
-    password: 7kvTQWL91UtXXvhnPvIwFdHsG-lCETFf
+    url:
+    username:
+    password:
     continueOnError: true
   dbcp2:
     max-wait-millis: 30000

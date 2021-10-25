@@ -96,7 +96,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
             int x2 = matrix.length - 1;
             int x3 = x + 1;
 
-            for(int y=x, y1=x+1; y1 < (matrix.length - 3) ; y++, x1++, y1++, x2--, y2--, x3++) {
+            for(int y=x, y1=x+1; y1 < matrix.length-1; y++, x1++, y1++, x2--, y2--, x3++) {
 
                 if(isMutantSecuence(diagonalesDerIzqArr, diagonalesIzqDerArr, diagonalesDerIzqAba, diagonalesIzqDerAba)){
                     log.info("Cantidad minima de DnA encontrada");
@@ -114,21 +114,23 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
 
                 log.info("Diagonal Izq - Der (Abajo)");
+                log.info("Position Horizontales: " + "x: " + x3 + " y: "+ x1 + " valor = " + matrix[x3][x1] + "  |  x: "
+                        + (x3+1) +  " y: "+ (x1+1)+" valor = " +matrix[x3 + 1][x1 + 1]);
                 this.validateSequence(matrix[x3][x1], matrix[x3 + 1][x1 + 1], diagonalesDerIzqAba);
 
 
                 log.info("Diagonal Der - Izq (Arriba)");
                 log.info("Position Horizontales: " + "x: " + x1 + " y: "+ y2 + " valor = " + matrix[x1][y2] + "  |  x: "
-                        + (x1+1) +  " y: "+ (y2-1)+" valor = " +matrix[x1 + 1][y2 - 1]);
+                        + (x1 + 1) +  " y: "+ (y2 - 1)+" valor = " +matrix[x1 + 1][y2 - 1]);
                 this.validateSequence(matrix[x1][y2], matrix[x1 + 1][y2 - 1], diagonalesIzqDerArr);
 
                 log.info("Diagonal Izq - Der (Abajo)");
-                log.info("Position Horizontales: " + "x: " + x2 + " y: "+ (y1-1) + " valor = " + matrix[x2][y1-1] + "  |  x: "
-                        + (x2-1) +  " y: "+ (y1)+" valor = " +matrix[x2-1][y1]);
-                this.validateSequence(matrix[x2][y1-1], matrix[x2-1][y1], diagonalesIzqDerAba);
+                log.info("Position Horizontales: " + "x: " + x2 + " y: "+ (y1) + " valor = " + matrix[x2][y1] + "  |  x: "
+                        + (x2-1) +  " y: "+ (y1+1)+" valor = " +matrix[x2-1][y1+1]);
+                this.validateSequence(matrix[x2][y1], matrix[x2-1][y1+1], diagonalesIzqDerAba);
 
-                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzqArr.getCountMutant() == 0
-                        && diagonalesIzqDerArr.getCountMutant() == 0 && diagonalesIzqDerAba.getCountMutant() == 0)){
+                if(y1==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzqArr.getCountMutant() == 0
+                        && diagonalesIzqDerArr.getCountMutant() == 0 && diagonalesIzqDerAba.getCountMutant() == 0 && diagonalesDerIzqAba.getCountMutant()==0)){
                     log.info("Cambio de Secuencia Valido");
                     break;
                 }

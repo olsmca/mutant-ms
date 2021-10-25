@@ -9,6 +9,7 @@ services:
       - POSTGRES_USER=mutant
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=mutant
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:

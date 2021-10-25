@@ -1,5 +1,6 @@
 server:
   port: 9090
+
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -9,9 +10,9 @@ spring:
     hikari:
       poolName: Hikari
       auto-commit: false
-  h2:
-    console:
-      enabled: true
+    h2:
+      console:
+        enabled: true
   jpa:
     show-sql: true
     hibernate:
@@ -24,5 +25,3 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
-springdoc:
-  pathsToMatch: /api/**

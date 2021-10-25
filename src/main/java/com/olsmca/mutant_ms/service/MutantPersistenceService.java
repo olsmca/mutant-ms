@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface MutantPersistenceService {
 
-    public List<MutantDTO> findAll();
-
     public Optional<MutantDTO> get(final String dna);
 
     public void create(final MutantDTO mutantDTO);

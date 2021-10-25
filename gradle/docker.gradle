@@ -1,6 +1,6 @@
 jib {
     from {
-        image = "eclipse-temurin:11-jre-focal"
+        image = "openjdk:11-jdk-slim"
     }
     to {
         image = "mutant-ms:latest"

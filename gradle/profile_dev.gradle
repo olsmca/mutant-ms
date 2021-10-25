@@ -1,20 +1,16 @@
 dependencies {
-    developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
-    implementation "com.h2database:h2"
+    runtimeOnly('org.postgresql:postgresql')
+    testImplementation "com.h2database:h2"
 }
 
 def profiles = "dev"
 
 springBoot {
-    buildInfo {
-        properties {
-            time = null
-        }
-    }
+    buildInfo()
 }
 
 bootRun {
-    args = []
+    args = ["---spring.profiles.active="+profiles]
 }
 
 processResources {
@@ -26,3 +22,5 @@ processResources {
         }
     }
 }
+
+bootJar.dependsOn processResources

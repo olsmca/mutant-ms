@@ -32,17 +32,6 @@ public class MutantController {
         this.adnAnalyzer = adnAnalyzer;
     }
 
-    @GetMapping
-    public ResponseEntity<List<MutantDTO>> getAllMutants() {
-        return ResponseEntity.ok(mutantService.findAll());
-    }
-
-    @GetMapping("{dna}")
-    public ResponseEntity<MutantDTO> getMutant(@PathVariable final String dna) {
-        Optional<MutantDTO> mutantDTOOptional = mutantService.get(dna);
-        return ResponseEntity.ok(mutantDTOOptional.isPresent()?mutantDTOOptional.get():null);
-    }
-
     @PostMapping
     public ResponseEntity<Void> isMutant(@RequestBody @Valid final MutantDTO mutantDTO) {
 

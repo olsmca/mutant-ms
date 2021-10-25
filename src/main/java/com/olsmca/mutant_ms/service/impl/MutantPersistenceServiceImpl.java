@@ -22,14 +22,6 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
     }
 
     @Override
-    public List<MutantDTO> findAll() {
-        return mutantRepository.findAll()
-                .stream()
-                .map(mutant -> mapToDTO(mutant, new MutantDTO()))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     @Cacheable(cacheNames = "mutant", key = "#dna")
     public Optional<MutantDTO> get(final String dna) {
         return mutantRepository.findByDna(dna)

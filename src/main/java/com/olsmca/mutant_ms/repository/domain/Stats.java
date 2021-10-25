@@ -14,6 +14,6 @@ public class Stats {
     private double ratio;
 
     public double calculateRatio() {
-        return countHumanDna + countMutantDna == 0?0:countMutantDna / (double) countHumanDna;
+        return countHumanDna + countMutantDna == 0?0:(double) countMutantDna / countHumanDna;
     }
 }

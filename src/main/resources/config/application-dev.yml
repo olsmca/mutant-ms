@@ -1,13 +1,20 @@
+server:
+  port: 9090
+
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/mutant}
-    username: ${JDBC_DATABASE_USERNAME:mutant}
-    password: ${JDBC_DATABASE_PASSWORD:}
+    initialization-mode: always
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mutant
+    username: mutant
+    password:
+    continueOnError: true
   dbcp2:
     max-wait-millis: 30000
     validation-query: "SELECT 1"
     validation-query-timeout: 30
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: update
     open-in-view: false
@@ -18,5 +25,3 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
-springdoc:
-  pathsToMatch: /api/**

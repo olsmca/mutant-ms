@@ -15,9 +15,14 @@ apply from: "gradle/docker.gradle"
 apply from: "gradle/sonar.gradle"
 
 if (project.hasProperty("prod")) {
+    println "properties prod"
     apply from: "gradle/profile_prod.gradle"
-} else {
+} else if (project.hasProperty("dev")) {
+    println "properties dev"
     apply from: "gradle/profile_dev.gradle"
+}else {
+    println "properties local"
+    apply from: "gradle/profile_local.gradle"
 }
 
 wrapper {
@@ -37,8 +42,6 @@ dependencies {
     implementation('org.springframework.boot:spring-boot-starter-data-jpa')
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation 'org.junit.jupiter:junit-jupiter'
-    runtimeOnly('org.postgresql:postgresql')
-    runtimeOnly('com.h2database:h2')
     implementation('org.springdoc:springdoc-openapi-ui:1.5.10')
     compileOnly('org.projectlombok:lombok')
     annotationProcessor('org.projectlombok:lombok')

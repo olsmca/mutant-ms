@@ -40,7 +40,8 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
         char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
 
-        return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
+        //return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
+        return ( isMutanteDiagonales(matrix));
     }
 
     protected boolean isNewMutant(final char [][] matrix) {
@@ -84,55 +85,62 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
     public boolean isMutanteDiagonales(final char [][] matrix) {
         int ciclos = matrix.length;
-        var diagonalesDerIzq = new SecuenciaDNA();
-        var diagonalesIzqDer = new SecuenciaDNA();
-        var diagonalesAbaArr = new SecuenciaDNA();
+        var diagonalesDerIzqArr = new SecuenciaDNA();
+        var diagonalesDerIzqAba = new SecuenciaDNA();
+        var diagonalesIzqDerArr = new SecuenciaDNA();
+        var diagonalesIzqDerAba = new SecuenciaDNA();
 
-        for(var x=0; ciclos >= Constants.SIZE_DNA_PATTER_VALID; x++) {
+        for(var x=0; ciclos >= Constants.SIZE_DNA_PATTER_VALID; x++, ciclos--) {
             var x1 = 0;
             int y2 = matrix.length - (x + 1);
             int x2 = matrix.length - 1;
+            int x3 = x + 1;
 
-            for(int y=x, y1=x+1; y1<ciclos; y++, x1++, y1++, x2--, y2--,ciclos--) {
+            for(int y=x, y1=x+1; y1 < (matrix.length - 3) ; y++, x1++, y1++, x2--, y2--, x3++) {
 
-                if((diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
-                        + diagonalesAbaArr.getNumSequence()) >= 2){
+                if(isMutantSecuence(diagonalesDerIzqArr, diagonalesIzqDerArr, diagonalesDerIzqAba, diagonalesIzqDerAba)){
                     log.info("Cantidad minima de DnA encontrada");
-                    log.info("Numero diagonalesDerIzq: " + diagonalesDerIzq.getNumSequence());
-                    log.info("Numero diagonalesIzqDer: " + diagonalesIzqDer.getNumSequence());
-                    log.info("Numero diagonalesAbaArr: " + diagonalesAbaArr.getNumSequence());
+                    log.info("Numero diagonalesDerIzq:    " + diagonalesDerIzqArr.getNumSequence());
+                    log.info("Numero diagonalesDerIzqAba: " + diagonalesDerIzqAba.getNumSequence());
+                    log.info("Numero diagonalesIzqDer:    " + diagonalesIzqDerArr.getNumSequence());
+                    log.info("Numero diagonalesAbaArr:    " + diagonalesIzqDerAba.getNumSequence());
                     return true;
                 }
 
-                log.info("Diagonal Izq - Der (Arriba - Abajo)");
+                log.info("Diagonal Izq - Der (Arriba)");
                 log.info("Position Horizontales: " + "x: " + x1 + " y: "+ y + " valor = " + matrix[x1][y] + "  |  x: "
                         + (x1 + 1) +  " y: "+ (y + 1)+" valor = " +matrix[x1 + 1][y + 1]);
-                this.validateSequence(matrix[x1][y], matrix[x1 + 1][y + 1], diagonalesDerIzq);
+                this.validateSequence(matrix[x1][y], matrix[x1 + 1][y + 1], diagonalesDerIzqArr);
 
-                log.info("Diagonal Der - Izq (Arriba - Abajo)");
+
+                log.info("Diagonal Izq - Der (Abajo)");
+                this.validateSequence(matrix[x3][x1], matrix[x3 + 1][x1 + 1], diagonalesDerIzqAba);
+
+
+                log.info("Diagonal Der - Izq (Arriba)");
                 log.info("Position Horizontales: " + "x: " + x1 + " y: "+ y2 + " valor = " + matrix[x1][y2] + "  |  x: "
                         + (x1+1) +  " y: "+ (y2-1)+" valor = " +matrix[x1 + 1][y2 - 1]);
-                this.validateSequence(matrix[x1][y2], matrix[x1 + 1][y2 - 1], diagonalesIzqDer);
+                this.validateSequence(matrix[x1][y2], matrix[x1 + 1][y2 - 1], diagonalesIzqDerArr);
 
-                log.info("Diagonal Izq - Der (Abajo - Arriba)");
+                log.info("Diagonal Izq - Der (Abajo)");
                 log.info("Position Horizontales: " + "x: " + x2 + " y: "+ (y1-1) + " valor = " + matrix[x2][y1-1] + "  |  x: "
                         + (x2-1) +  " y: "+ (y1)+" valor = " +matrix[x2-1][y1]);
-                this.validateSequence(matrix[x2][y1-1], matrix[x2-1][y1], diagonalesAbaArr);
+                this.validateSequence(matrix[x2][y1-1], matrix[x2-1][y1], diagonalesIzqDerAba);
 
-                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzq.getCountMutant() == 0
-                        && diagonalesIzqDer.getCountMutant() == 0 && diagonalesAbaArr.getCountMutant() == 0)){
+                if(y==matrix.length-Constants.SIZE_DNA_PATTER_VALID && (diagonalesDerIzqArr.getCountMutant() == 0
+                        && diagonalesIzqDerArr.getCountMutant() == 0 && diagonalesIzqDerAba.getCountMutant() == 0)){
                     log.info("Cambio de Secuencia Valido");
                     break;
                 }
             }
         }
 
-        log.info("Cantidad Secuencias Diagonales Derecha-Izquierda: " + diagonalesDerIzq.getNumSequence());
-        log.info("Cantidad Secuencias Diagonales Izquierda-Derecha: " + diagonalesIzqDer.getNumSequence());
-        log.info("Cantidad Secuencias Diagonales Izq-Der Aba-Arr  : " + diagonalesAbaArr.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Izquierda-Derecha Arriba: " + diagonalesDerIzqArr.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Izquierda-Derecha Abajo : " + diagonalesDerIzqAba.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Derecha-Izquierda Arriba: " + diagonalesIzqDerArr.getNumSequence());
+        log.info("Cantidad Secuencias Diagonales Derecha-Izquierda Abajo : " + diagonalesIzqDerAba.getNumSequence());
 
-        return (diagonalesDerIzq.getNumSequence() + diagonalesIzqDer.getNumSequence()
-                + diagonalesAbaArr.getNumSequence()) >= 2;
+        return isMutantSecuence(diagonalesDerIzqArr, diagonalesIzqDerArr, diagonalesDerIzqAba, diagonalesIzqDerAba);
     }
 
     protected char[][] getMatrixfromArray(String[] dna){
@@ -156,5 +164,18 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
             secuenciaDNA.setCountMutant(0);
         }
     }
-}
 
+    private boolean isMutantSecuence(SecuenciaDNA...dnas) {
+        boolean result = false;
+        int cant = 0;
+
+        for(SecuenciaDNA dna : dnas) {
+            cant += dna.getNumSequence();
+            if(cant > 1) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+}

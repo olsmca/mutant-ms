@@ -11,5 +11,5 @@ public interface MutantPersistenceService {
 
     void create(final MutantDTO mutantDTO);
 
-    Stats getStats();
+    Optional<Stats> getStats();
 }

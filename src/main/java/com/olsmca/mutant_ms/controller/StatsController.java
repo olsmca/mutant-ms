@@ -18,13 +18,7 @@ public class StatsController {
     }
 
     @GetMapping
-    public ResponseEntity<Stats> getStats() {
-        ResponseEntity<Stats> response;
-        try{
-            response = ResponseEntity.ok(mutantPersistenceService.getStats());
-        }catch (Exception ex){
-            response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        return  response;
+    public Stats getStats() {
+        return  mutantPersistenceService.getStats().orElseThrow(NoContentException::new);
     }
 }

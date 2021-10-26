@@ -37,13 +37,14 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
     }
 
     @Override
-    public Stats getStats(){
+    public Optional<Stats> getStats(){
+
         var stats = Stats.builder()
                 .countMutantDna(mutantRepository.countAllByIsMutant(true))
                 .countHumanDna(mutantRepository.countAllByIsMutant(false))
                 .build();
         stats.setRatio(stats.calculateRatio());
-        return stats;
+        return Optional.of(stats);
     }
 
     private MutantDTO mapToDTO(final Mutant mutant, final MutantDTO mutantDTO) {

@@ -8,9 +8,7 @@ import com.olsmca.mutant_ms.service.MutantPersistenceService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class MutantPersistenceServiceImpl implements MutantPersistenceService {
@@ -30,11 +28,10 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
 
     @Override
     public void create(final MutantDTO mutantDTO) {
-        final var mutant = new Mutant();
-        mapToEntity(mutantDTO, mutant);
+        final var mutant = mapToEntity(mutantDTO, new Mutant());
 
         Optional<MutantDTO> optionalMutantDTO = get(mutant.getDna());
-        if(!optionalMutantDTO.isPresent()){
+        if(!optionalMutantDTO.isEmpty()){
             mutantRepository.save(mutant);
         }
     }

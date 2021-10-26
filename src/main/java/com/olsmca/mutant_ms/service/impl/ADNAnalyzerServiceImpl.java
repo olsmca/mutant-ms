@@ -20,9 +20,9 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
         Optional<String> stringOptional =Arrays.stream(mutantDTO.getDna()).findFirst();
 
-        int sizeElement = stringOptional.isPresent()?stringOptional.get().length():0;
+        int sizeElement = !stringOptional.isEmpty()?stringOptional.get().length():0;
         int sizeDnaLs = mutantDTO.getDna().length;
-        var dynamicPattern = String.format("[ATGC]{%d}",sizeElement);
+        var dynamicPattern = String.format(Constants.DNA_PATTERN,sizeElement);
 
         var pattern = Pattern.compile(dynamicPattern);
         var matcher = pattern.matcher(String.join(",",mutantDTO.getDna()));
@@ -41,7 +41,6 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         char [][] matrix = getMatrixfromArray(mutantDTO.getDna());
 
         return ( isNewMutant(matrix) || isMutanteDiagonales(matrix));
-        //return ( isMutanteDiagonales(matrix));
     }
 
     protected boolean isNewMutant(final char [][] matrix) {
@@ -96,7 +95,7 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
             int x2 = matrix.length - 1;
             int x3 = x + 1;
 
-            for(int y=x, y1=x+1; y1 < matrix.length-1; y++, x1++, y1++, x2--, y2--, x3++) {
+            for(int y=0, y1=x+1; y1 < matrix.length-1; y++, x1++, y1++, x2--, y2--, x3++) {
 
                 if(isMutantSecuence(diagonalesDerIzqArr, diagonalesIzqDerArr, diagonalesDerIzqAba, diagonalesIzqDerAba)){
                     log.info("Cantidad minima de DnA encontrada");

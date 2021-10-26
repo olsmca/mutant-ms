@@ -5,8 +5,8 @@ spring:
   datasource:
     initialization-mode: always
     driverClassName: org.postgresql.Driver
-    url:
-    username:
+    url: jdbc:postgresql://localhost:5432/mutant
+    username: mutant
     password:
     continueOnError: true
   dbcp2:

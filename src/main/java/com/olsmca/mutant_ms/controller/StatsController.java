@@ -18,7 +18,7 @@ public class StatsController {
     }
 
     @GetMapping
-    public ResponseEntity<Stats> getAllMutants() {
+    public ResponseEntity<Stats> getStats() {
         ResponseEntity<Stats> response;
         try{
             response = ResponseEntity.ok(mutantPersistenceService.getStats());

@@ -3,20 +3,15 @@ package com.olsmca.mutant_ms.controller;
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
 import com.olsmca.mutant_ms.service.ADNAnalyzerService;
 import com.olsmca.mutant_ms.service.MutantPersistenceService;
-
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 
 @RestController

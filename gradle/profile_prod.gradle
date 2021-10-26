@@ -4,13 +4,23 @@ dependencies {
 }
 
 def profiles = "prod"
+def url = project.getProperty("url")
+def user = project.getProperty("user")
+def pass = project.getProperty("pass")
+
+println url
+println user
+println pass
 
 springBoot {
     buildInfo()
 }
 
 bootRun {
-    args = ["---spring.profiles.active="+profiles]
+    args = ["--spring.profiles.active="+profiles
+            , "--spring.datasource.url=jdbc:postgresql://"+url+"/"+user
+            ,"--spring.datasource.username="+user
+            ,"--spring.datasource.password="+pass]
 }
 
 processResources {

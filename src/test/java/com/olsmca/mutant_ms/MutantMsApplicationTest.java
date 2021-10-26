@@ -7,10 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class MutantMsApplicationTest {
 
     @Test
-    void applicationContextLoaded() {
-    }
-
-    @Test
     public void applicationContextTest() {
         MutantMsApplication.main(new String[] {});
     }

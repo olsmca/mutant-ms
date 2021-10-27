@@ -111,6 +111,12 @@ Mas informacion sobre el funcionamiento de Jib en la documentacion oficial - [Ji
 Se creo un pipeline mediante github Actions, el cual compila, ejecuta pruebas y actualiza la insignia sobre porcentaje de covertura vinculado en el readme del proyecto en el siguiente enlace -
 [Java CI]
 
+### Entorno AWS:
+La aplicación también ha sido desplegada en AWS de la siguiente manera:
+* Postgresql mediante [ElephantSql] 
+* mutant-ms desplegada en [Elastic Beanstalk](http://mutantms-env-1.eba-qwb2mtr6.us-east-1.elasticbeanstalk.com/)
+
+[ElephantSql]: <https://www.elephantsql.com/>
 [Jib Authentication]: <https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#authentication-methods>
 [Java CI]: <https://github.com/olsmca/mutant-ms/actions/workflows/ci.yml>
 [Documento Prueba Tecnica]: <https://github.com/olsmca/mutant-ms/blob/main/ExamenMercadolibreMutantes.pdf>

@@ -27,6 +27,12 @@ public class MutantController {
         this.adnAnalyzer = adnAnalyzer;
     }
 
+    /**
+    *   Este metodo captura la solicitudes POST entrantes y verifica
+    *   Si la matriz de ADN entrante es mutante o no
+    *   @param mutantDTO es un objeto que tiene como atributos el dna a procesar
+    *   @return Si el ADN procesado es mutante retorna un ResponseEntity 200 OK caso contrario 403 FORBIDDEN
+    */
     @PostMapping
     public ResponseEntity<Void> isMutant(@RequestBody @Valid final MutantDTO mutantDTO) {
 

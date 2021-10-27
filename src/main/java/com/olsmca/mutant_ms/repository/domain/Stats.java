@@ -3,6 +3,10 @@ package com.olsmca.mutant_ms.repository.domain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
+/**
+ * POJO para procesar las estadisticas de la aplicacion
+ */
+
 @Getter
 @Setter
 @Builder

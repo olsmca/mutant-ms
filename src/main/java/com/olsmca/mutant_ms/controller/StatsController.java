@@ -17,6 +17,11 @@ public class StatsController {
         this.mutantPersistenceService = mutantService;
     }
 
+    /**
+     *   Este metodo captura la solicitudes GET entrantes y verifica /stats
+     *   procesa la estadisticas de las peticiones almacenadas por la aplicacion
+     *   @return el objeto Stats con status 200 en caso contrario retorna un 204 NO CONTENT
+     */
     @GetMapping
     public Stats getStats() {
         return  mutantPersistenceService.getStats().orElseThrow(NoContentException::new);

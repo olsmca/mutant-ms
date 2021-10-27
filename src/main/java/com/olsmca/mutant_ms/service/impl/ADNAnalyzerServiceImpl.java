@@ -14,10 +14,12 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
-
+    /**
+     * @param mutantDTO es la represetacion de la peticion recibida y determina si el ADN es mutante o no
+     * @return resultado True o False si un ADN es mutante o no.
+     */
     @Override
     public boolean isMutant(MutantDTO mutantDTO) {
-        //TODO: validaciones iniciales de tamaño
         if(!initValidation(mutantDTO)){
             return false;
         }
@@ -32,6 +34,15 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         return countMutant>1?true:false;
     }
 
+    /**
+     * Realiza las validaciones iniciales para evitar el procesamiento a la matriz de ADN si este no cumple unos requisitos previos
+     * busca un elemento de la cadena de ADN determina el tamaño y lo compara con el tamaño de la matriz
+     * esto lo aplica para procesar matrices cuadradas
+     * Tambien pregunta si el tamaño de la matriz a procesar es menor al tamaño del patron de ADN especificado como constante Constants.SIZE_DNA_PATTER_VALID
+     * Procesa el ADN para confirmar que mantena el patron de letras determinado en Constants.DNA_PATTERN
+     * @param mutantDTO es la representacion del json recibido y se procesa con el dna como parametro
+     * @return true o false si no es un patron valido para procesar
+     */
     protected boolean initValidation(MutantDTO mutantDTO){
         Optional<String> stringOptional =Arrays.stream(mutantDTO.getDna()).findFirst();
 
@@ -44,11 +55,6 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
 
         long sizeMatcher = matcher.results().count();
 
-        log.info("sizeElement: "+sizeElement);
-        log.info("Matcher: "+sizeMatcher);
-        log.info("SizeDNA: "+sizeDnaLs);
-        log.info("dynamicPattern: "+dynamicPattern);
-
         if(sizeDnaLs< Constants.SIZE_DNA_PATTER_VALID || sizeElement <Constants.SIZE_DNA_PATTER_VALID){
             return false;
         }
@@ -60,6 +66,14 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         return true;
     }
 
+    /**
+     * Procesa la matriz horizontal y vertical a la vez
+     * Durante el procesamiento se tiene en cuenta unas condiciones para evitar ciclos adicionales,
+     * Si la posicion actual es igual al tamaño de la matriz menos el tamaño del patron ADN dentro de los recorridos
+     * y no se tienen conteos de letras se finalizada, dado que no tiene mas iteraciones para cumplir las condiciones de Mutantes
+     * @param matrix a procesar
+     * @return la cantidad de mutantes localizados dentro de la matriz
+     */
     protected int isMutantHorVer(final char [][] matrix) {
 
         var secuenciaHorizontal = new SecuenciaDNA();
@@ -95,6 +109,12 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         return (secuenciaHorizontal.getNumSequence() + secuenciaVertical.getNumSequence());
     }
 
+    /**
+     * Se hace las mismas condiciones que en el metodo isMutantHorVer() solo que se manejan mas variables
+     * para aprovechar el recorrido y revisar varias diagonales a la vez
+     * @param matrix a aprovechar
+     * @return la cantidad de mutantes localizados en la matriz por las diagonales
+     */
     public int isMutanteDiagonals(final char [][] matrix) {
         int ciclos = matrix.length;
         var diagonalesDerIzqArr = new SecuenciaDNA();
@@ -143,6 +163,11 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
                 diagonalesIzqDerArr.getNumSequence()+diagonalesIzqDerAba.getNumSequence());
     }
 
+    /**
+     * procesa el arreglo de String para retornar la matriz de NxN
+     * @param dna arreglo de String
+     * @return matriz de char
+     */
     protected char[][] getMatrixfromArray(String[] dna){
 
         char [][] matrixFromArray = new char[dna.length][dna.length];
@@ -153,6 +178,12 @@ public class ADNAnalyzerServiceImpl implements ADNAnalyzerService {
         return matrixFromArray;
     }
 
+    /**
+     * Validacion de secuencia en la cual se revisa el conteo de ADN comparando las letras recibidas
+     * @param val1 Corresponde a la letra obtenida dentro del recorrido en la Matriz
+     * @param val2 Corresponde a la letra obtenida dentro del recorrido en la Matriz
+     * @param secuenciaDNA es el objeto inicializado dentro del procesamiento de la matriz el cual lleva el conteo de secuencias y cantidad de letras
+     */
     private void validateSequence(char val1, char val2, SecuenciaDNA secuenciaDNA) {
         if(val1 == val2) {
             secuenciaDNA.setCountMutant(secuenciaDNA.getCountMutant() + 1);

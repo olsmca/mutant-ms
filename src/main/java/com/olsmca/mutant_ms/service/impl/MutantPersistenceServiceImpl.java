@@ -19,6 +19,11 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
         this.mutantRepository = mutantRepository;
     }
 
+    /**
+     * Consulta los adn registrados, maneja una cache para permitir un procesamiento mas rapido de los adn almacenados
+     * @param dna
+     * @return
+     */
     @Override
     @Cacheable(cacheNames = "mutant", key = "#dna")
     public Optional<MutantDTO> get(final String dna) {
@@ -26,6 +31,10 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
                 .map(mutant -> mapToDTO(mutant, new MutantDTO()));
     }
 
+    /**
+     * Metodo que consulta el mutante a almacenar, si no existe lo almacena
+     * @param mutantDTO
+     */
     @Override
     public void create(final MutantDTO mutantDTO) {
         final var mutant = mapToEntity(mutantDTO, new Mutant());
@@ -36,6 +45,10 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
         }
     }
 
+    /**
+     * Metodo calcula las estadisticas de valores Humanos y Mutantes en el ADN
+     * @return retorna el Objeto Stats calculado
+     */
     @Override
     public Optional<Stats> getStats(){
 

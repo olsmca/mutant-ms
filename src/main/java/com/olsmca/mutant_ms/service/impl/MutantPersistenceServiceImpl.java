@@ -40,7 +40,7 @@ public class MutantPersistenceServiceImpl implements MutantPersistenceService {
         final var mutant = mapToEntity(mutantDTO, new Mutant());
 
         Optional<MutantDTO> optionalMutantDTO = get(mutant.getDna());
-        if(!optionalMutantDTO.isEmpty()){
+        if(optionalMutantDTO.isEmpty()){
             mutantRepository.save(mutant);
         }
     }

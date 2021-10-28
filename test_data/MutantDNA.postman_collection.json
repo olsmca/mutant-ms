@@ -42,69 +42,18 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:9090/mutants",
+					"raw": "http://mutantms-env-1.eba-qwb2mtr6.us-east-1.elasticbeanstalk.com/mutant/",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"mutantms-env-1",
+						"eba-qwb2mtr6",
+						"us-east-1",
+						"elasticbeanstalk",
+						"com"
 					],
-					"port": "9090",
 					"path": [
-						"mutants"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "mutantsApi",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\t\"dna\": [\"ATGCGA\",\"CAGTGC\",\"TTATGT\",\"AGAAGG\",\"CCCCTC\",\"TCACTG\"]\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:9090/mutants",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"mutants"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get All Mutants",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:9090/mutants",
-					"host": [
-						"localhost"
-					],
-					"port": "9090",
-					"path": [
-						"mutants"
+						"mutant",
+						""
 					]
 				}
 			},
@@ -116,11 +65,15 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:9090/stats/",
+					"raw": "http://mutantms-env-1.eba-qwb2mtr6.us-east-1.elasticbeanstalk.com/stats/",
+					"protocol": "http",
 					"host": [
-						"localhost"
+						"mutantms-env-1",
+						"eba-qwb2mtr6",
+						"us-east-1",
+						"elasticbeanstalk",
+						"com"
 					],
-					"port": "9090",
 					"path": [
 						"stats",
 						""

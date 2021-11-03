@@ -1,26 +1,25 @@
 package com.olsmca.mutant_ms.repository.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
 
 
-@Entity
 @Getter
 @Setter
-@Data
+@Document("Mutant")
 public class Mutant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false, updatable = false, unique = true)
+    @Indexed(unique=true)
     private String dna;
 
-    @Column(nullable = false)
+    @Indexed(name = "is_mutant")
     private Boolean isMutant;
 
 }

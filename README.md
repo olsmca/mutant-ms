@@ -43,13 +43,6 @@ Este endpoint retorna un JSON con la estadistica de las peticiones almacenadas.
   * Docker
   * Git
   
-
-Para ejecutar la aplicacion localmente sin compilar ejecute:
-
-```./gradlew```
-
->La aplicacion estara disponible en [URL App Local] y [Base de datos H2]
-
 Puede construir la app mediante el siguiente comando:
 
 ```./gradlew bootJar```
@@ -86,15 +79,22 @@ Luego de tener sonar corriendo en local ejecute el analisis de codigo con el sig
 ```./gradlew clean check jacocoTestReport sonarqube```
 
 ##Docker
-El proyecto incorpora una imagen de postgresql para correr simulando el ambiente dev:  
+El proyecto incorpora una imagen de mongodb y mongo express para correr simulando el ambiente local y dev:  
 #### Using Docker to simplify development (optional)
 ```
-docker-compose -f src/main/docker/postgresql.yml up -d
+docker-compose -f src/main/docker/mongo-docker-compose.yml up -d
 ```
 Para detenerlo y quitar del contenedor, ejecute:
 ```
-docker-compose -f src/main/docker/postgresql.yml down
+docker-compose -f src/main/docker/mongo-docker-compose.yml down
 ```
+
+Para ejecutar la aplicacion localmente sin compilar ejecute:
+
+```./gradlew```
+
+>La aplicacion estara disponible en [URL App Local] y [Base de datos Mongo Express]
+
 
 Se puede dockerizar la aplicacion mediante una tarea de gradle basada en la libreria Jib de google, esto crea una imagen del proyecto, tambien es posible adicionar la configuracion de registry
 #### Jib
@@ -120,5 +120,5 @@ La aplicación también ha sido desplegada en AWS de la siguiente manera:
 [Jib Authentication]: <https://github.com/GoogleContainerTools/jib/tree/master/jib-gradle-plugin#authentication-methods>
 [Java CI]: <https://github.com/olsmca/mutant-ms/actions/workflows/ci.yml>
 [Documento Prueba Tecnica]: <https://github.com/olsmca/mutant-ms/blob/main/ExamenMercadolibreMutantes.pdf>
-[Base de datos H2]:<http://localhost:9090/h2-console/login.jsp>
+[Base de datos Mongo Express]:<http://localhost:8081/>
 [URL App Local]: <localhost:9090>

@@ -1,6 +1,6 @@
 dependencies {
     developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
-    implementation "com.h2database:h2"
+    implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
 }
 
 def profiles = "local"

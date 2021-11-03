@@ -18,9 +18,12 @@ springBoot {
 
 bootRun {
     args = ["--spring.profiles.active="+profiles
-            , "--spring.datasource.url=jdbc:postgresql://"+url+"/"+user
-            ,"--spring.datasource.username="+user
-            ,"--spring.datasource.password="+pass]
+            , "--spring.data.mongodb.host="+url
+            ,"--spring.data.mongodb.username="+user
+            ,"--spring.data.mongodb.password="+pass
+            ,"--spring.data.mongodb.authentication-database=admin"
+            ,"--spring.data.mongodb.database=mutantdb"
+            ,"--spring.data.mongodb.port=27017"]
 }
 
 processResources {

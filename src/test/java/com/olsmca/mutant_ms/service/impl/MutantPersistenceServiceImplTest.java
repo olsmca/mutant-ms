@@ -1,7 +1,7 @@
 package com.olsmca.mutant_ms.service.impl;
 
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
-import com.olsmca.mutant_ms.repository.MutantRepository;
+import com.olsmca.mutant_ms.repository.MutantRepositoryMongo;
 import com.olsmca.mutant_ms.repository.domain.Mutant;
 import com.olsmca.mutant_ms.service.MutantPersistenceService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ class MutantPersistenceServiceImplTest {
     MutantPersistenceService mutantPersistenceService;
 
     @MockBean
-    MutantRepository mutantRepository;
+    MutantRepositoryMongo mutantRepository;
 
     @ParameterizedTest
     @CsvFileSource(resources = "/data.csv", numLinesToSkip = 1)

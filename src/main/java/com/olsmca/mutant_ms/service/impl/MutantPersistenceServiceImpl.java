@@ -1,7 +1,7 @@
 package com.olsmca.mutant_ms.service.impl;
 
 import com.olsmca.mutant_ms.controller.model.MutantDTO;
-import com.olsmca.mutant_ms.repository.MutantRepository;
+import com.olsmca.mutant_ms.repository.MutantRepositoryMongo;
 import com.olsmca.mutant_ms.repository.domain.Mutant;
 import com.olsmca.mutant_ms.repository.domain.Stats;
 import com.olsmca.mutant_ms.service.MutantPersistenceService;
@@ -13,9 +13,9 @@ import java.util.Optional;
 @Service
 public class MutantPersistenceServiceImpl implements MutantPersistenceService {
 
-    private final MutantRepository mutantRepository;
+    private final MutantRepositoryMongo mutantRepository;
 
-    public MutantPersistenceServiceImpl(final MutantRepository mutantRepository) {
+    public MutantPersistenceServiceImpl(final MutantRepositoryMongo mutantRepository) {
         this.mutantRepository = mutantRepository;
     }
 

@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+
+  mongodb:
+    container_name: mongo-local
+    image: mongo:latest
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mutantuser
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_PASSWORD=mutantpass
+    ports:
+      - '27017:27017'
+  mongo-express:
+    container_name: mongo-express-local
+    image: mongo-express:latest
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=mutantuser
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=mutantpass
+      - ME_CONFIG_MONGODB_SERVER=mongo-local
+      - ME_CONFIG_BASICAUTH_USERNAME=mutantuser
+      - ME_CONFIG_BASICAUTH_PASSWORD=mutantpass
+    ports:
+      - '8081:8081'
